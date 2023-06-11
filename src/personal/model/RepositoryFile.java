@@ -36,11 +36,30 @@ public class RepositoryFile implements Repository {
         String id = String.format("%d", newId);
         user.setId(id);
         users.add(user);
-        List<String> lines = new ArrayList<>();
-        for (User item: users) {
-            lines.add(mapper.map(item));
-        }
+        List<String> lines = mapToString(users);
         fileOperation.saveAllLines(lines);
         return id;
+    }
+
+    private List<String> mapToString(List<User> users) {
+        List<String> lines = new ArrayList<>();
+        for (User item : users) {
+            lines.add(mapper.map(item));
+        }
+        return lines;
+    }
+
+    @Override
+    public User updateUser(User user) {
+        List<User> users = getAllUsers();                   // возвращает список контактов отредаченых под строку
+        for (User currentUser: users) {                     // перебираем фором список контактов, если совпал ID
+            if (currentUser.getId().equals(user.getId())){   // сеттером возвращаем контакту ФИО и тел контакта, обрабатываемого методом
+                currentUser.setFirstName(user.getFirstName());
+                currentUser.setLastName(user.getLastName());
+                currentUser.setPhone(user.getPhone());
+            }
+        }
+        fileOperation.saveAllLines(mapToString(users));
+        return user;
     }
 }
