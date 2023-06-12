@@ -28,7 +28,7 @@ public class RepositoryFile implements Repository {
         int max = 0;
         for (User item : users) {
             int id = Integer.parseInt(item.getId());
-            if (max < id){
+            if (max < id) {
                 max = id;
             }
         }
@@ -52,13 +52,21 @@ public class RepositoryFile implements Repository {
     @Override
     public User updateUser(User user) {
         List<User> users = getAllUsers();                   // возвращает список контактов отредаченых под строку
-        for (User currentUser: users) {                     // перебираем фором список контактов, если совпал ID
-            if (currentUser.getId().equals(user.getId())){   // сеттером возвращаем контакту ФИО и тел контакта, обрабатываемого методом
+        for (User currentUser : users) {                     // перебираем фором список контактов, если совпал ID
+            if (currentUser.getId().equals(user.getId())) {   // сеттером возвращаем контакту ФИО и тел контакта, обрабатываемого методом
                 currentUser.setFirstName(user.getFirstName());
                 currentUser.setLastName(user.getLastName());
                 currentUser.setPhone(user.getPhone());
             }
         }
+        fileOperation.saveAllLines(mapToString(users));
+        return user;
+    }
+
+    @Override
+    public User deleteUser(User user) {
+        List<User> users = getAllUsers();
+        users.removeIf(currentUser -> currentUser.getId().equals(user.getId()));
         fileOperation.saveAllLines(mapToString(users));
         return user;
     }

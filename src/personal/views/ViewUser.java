@@ -37,11 +37,21 @@ public class ViewUser {
                     case UPDATE:
                         updateUser();
                         break;
+                    case DELETE:
+                        deleteUser();
+                        break;
                 }
             } catch (Exception e){
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private void deleteUser() throws Exception {
+        readList();                                 // вывели список контактов
+        User user = getUser();                      // запросили id нужного контакта, вернули юзера с этим id
+        userController.deleteUser(user);            // вызвали метод, который удаляет искомый элемент из списка
+        System.out.println("Контакт удален: \n");
     }
 
     private void updateUser() throws Exception {
